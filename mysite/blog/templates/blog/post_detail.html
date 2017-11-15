@@ -9,7 +9,7 @@
   {% else %}
     <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
   {% endif %}
-  <p class="postcontent">{{ post.title|save|linebreaksbr }}</p>
+  <p class="postcontent">{{ post.text|safe|linebreaksbr }}</p>
 
   {% if user.is_authenticated %}
   <!-- edit post -->
@@ -31,8 +31,8 @@
     {% for comment in post.comments.all %}
       <br>
       {% if user.is_authenticated or comment.approved_comment %}
-        {{ comment.created_date }}
-        {% if comment not comment.approved_comment %}
+        {{ comment.create_date }}
+        {% if not comment.approved_comment %}
         <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">
           <span class="glyphicon glyphicon-remove"></span>
         </a>
@@ -41,7 +41,7 @@
         </a>
         {% endif %}
 
-        <p>{{ comment.text|save|linebreaks }}</p>
+        <p>{{ comment.text|safe|linebreaks }}</p>
         <p>Posted by {{comment.author}} </p>
 
       {% endif %}
